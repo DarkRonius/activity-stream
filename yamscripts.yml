@@ -55,9 +55,8 @@ scripts:
     locales: pontoon-to-json --src locales --dest system-addon/data
     # Copy over all of the system-addon directory
     copy: cpx "system-addon/**/{,.}*" ../mozilla-central/browser/extensions/activity-stream
-    copyPingCentre: cpx "system-addon/lib/PingCentre.jsm" ../mozilla-central/browser/modules
-    rmDupePingCentre: rimraf "../mozilla-central/browser/extensions/activity-stream/lib/PingCentre.jsm"
-    rmcontentsrc: rimraf "../mozilla-central/browser/extensions/activity-stream/{,test/unit/}content-src"
+    copyPingCentre: cpx "system-addon/ping-centre/PingCentre.jsm" ../mozilla-central/browser/modules
+    rmcontentsrc: rimraf "../mozilla-central/browser/extensions/activity-stream/{,test/unit/}{content-src,ping-centre}"
 
 # packagemc: Build stand-alone system add-on xpi
   packagemc:
@@ -72,6 +71,7 @@ scripts:
     _parallel: true
     pre: =>prebuildmc
     copy: =>buildmc:copy -- -w
+    copyPingCentre: =>buildmc:copyPingCentre -- -w
     webpack: =>buildmc:webpack -- -w
     css: =>buildmc:css && =>buildmc:css -- -w
 
